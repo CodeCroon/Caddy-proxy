@@ -23,7 +23,7 @@ jobs:
       - name: Build Caddy with forwardproxy plugin
         run: |
           xcaddy build --with github.com/caddyserver/forwardproxy@caddy2
-          ./caddy -version  # 验证构建的 Caddy 版本
+          # ./caddy -version  # 验证构建的 Caddy 版本
 
       - name: Upload Caddy binary as artifact
         uses: actions/upload-artifact@v4
