@@ -1,0 +1,32 @@
+name: Build Caddy with Forwardproxy Plugin and Upload Artifact
+
+on:
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'  # 根据需要调整 Go 版本
+
+      - name: Install xcaddy
+        run: |
+          go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+
+      - name: Build Caddy with forwardproxy plugin
+        run: |
+          xcaddy build --with github.com/caddyserver/forwardproxy@caddy2
+          ./caddy -version  # 验证构建的 Caddy 版本
+
+      - name: Upload Caddy binary as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: caddy-binary
+          path: caddy
